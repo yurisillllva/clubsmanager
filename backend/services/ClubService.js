@@ -3,9 +3,16 @@ const ClubRepository = require('../repositories/ClubRepository');
 const ClubResource = require('../resources/ClubResource');
 
 module.exports = {
-  async getAllClubs() {
-    const clubs = await ClubRepository.findAll();
-    return clubs.map(club => ClubResource.toJson(club));
+  async getAllClubs(page = 1, search = '') {
+    const { count, rows } = await ClubRepository.findAll(page, search);
+    return {
+      data: rows.map(club => ClubResource.toJson(club)),
+      meta: {
+        total: count,
+        page,
+        totalPages: Math.ceil(count / 7)
+      }
+    };
   },
 
   async getClubById(id) {
