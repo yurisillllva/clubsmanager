@@ -5,8 +5,10 @@ const UpdateClubRequest = require('../requests/UpdateClubRequest');
 module.exports = {
   async index(req, res) {
     try {
-      const clubs = await ClubService.getAllClubs();
-      res.json(clubs);
+      const page = parseInt(req.query.page) || 1;
+      const search = req.query.search || '';
+      const result = await ClubService.getAllClubs(page, search);
+      res.json(result);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
