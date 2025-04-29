@@ -1,3 +1,4 @@
+const { Club } = require('../models/Club'); 
 const ClubRepository = require('../repositories/ClubRepository');
 const ClubResource = require('../resources/ClubResource');
 
