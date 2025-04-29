@@ -4,6 +4,8 @@ const cors = require('cors');
 const sequelize = require('./config/database');
 const ClubRoutes = require('./routes/ClubRoutes');
 
+require('./models/Club')(sequelize);
+
 const app = express();
 
 app.use(cors());
