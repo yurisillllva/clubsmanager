@@ -5,16 +5,18 @@ const api = axios.create({
   timeout: 10000,
 });
 
-export const getClubs = (page = 1, search = '') => 
-  api.get('/clubs', { params: { page, search } });
-
+export const getClubs = async (page = 1, search = '') => {
+  const response = await api.get('/clubs', { params: { page, search } });
+  return response.data; 
+};
+  
 export const getClubById = (id) => api.get(`/clubs/${id}`);
 
 export const createClub = (clubData) => api.post('/clubs', clubData);
 
 export const updateClub = (id, clubData) => api.put(`/clubs/${id}`, clubData);
 
-export const deleteClub = (id) => api.delete(`/clubs/${id}`);
+export const deleteClub = async (id) => api.delete(`/clubs/${id}`);
 
 
 api.interceptors.response.use(
