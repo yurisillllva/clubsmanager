@@ -30,10 +30,11 @@ module.exports = {
   },
 
   async updateClub(id, clubData) {
-    if (clubData.email) {
-      const existingClub = await ClubRepository.findByEmail(clubData.email);
-      if (existingClub && existingClub.id !== id) {
-        throw new Error('Email já está em uso');
+    const existingClub = await ClubRepository.findById(id);
+    if (clubData.email && clubData.email !== existingClub.email) {
+      const clubWithSameEmail = await ClubRepository.findByEmail(clubData.email);
+      if (clubWithSameEmail) {
+        throw new Error('Email já está em uso por outro clube');
       }
     }
     await ClubRepository.update(id, clubData);
