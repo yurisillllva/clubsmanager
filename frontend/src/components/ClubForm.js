@@ -13,16 +13,40 @@ function ClubForm({ show, onHide, club, refreshList }) {
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
 
-  // useEffect(() => {
-  //   if (club) {
-  //     setFormData({
-  //       nome: club.nome,
-  //       email: club.email,
-  //       telefone: club.telefone,
-  //       cidade_sede: club.cidade_sede
-  //     });
-  //   }
-  // }, [club]);
+  useEffect(() => {
+    if (club) { 
+      const rawPhone = club.telefone || '';
+      const formattedPhone = rawPhone 
+        ? `+55 ${rawPhone.slice(0, 2)} ${rawPhone.slice(2, 7)}-${rawPhone.slice(7)}`
+        : '';
+        
+      setFormData({
+        nome: club.nome,
+        email: club.email,
+        telefone: formattedPhone,
+        cidade_sede: club.cidade_sede
+      });
+    } else {
+      setFormData({
+        nome: '',
+        email: '',
+        telefone: '',
+        cidade_sede: ''
+      });
+    }
+  }, [club]);
+  
+
+  useEffect(() => {
+    if (!show) {
+      setFormData({
+        nome: '',
+        email: '',
+        telefone: '',
+        cidade_sede: ''
+      });
+    }
+  }, [show]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +82,7 @@ function ClubForm({ show, onHide, club, refreshList }) {
       <Modal.Header closeButton>
         <Modal.Title>{club ? 'Editar Clube' : 'Novo Clube'}</Modal.Title>
       </Modal.Header>
-      
+
       <Form onSubmit={handleSubmit}>
         <Modal.Body>
           {formError && <Alert variant="danger">{formError}</Alert>}
@@ -68,7 +92,7 @@ function ClubForm({ show, onHide, club, refreshList }) {
             <Form.Control
               type="text"
               value={formData.nome}
-              onChange={(e) => setFormData({...formData, nome: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
               isInvalid={!!errors.nome}
               required
             />
@@ -80,7 +104,7 @@ function ClubForm({ show, onHide, club, refreshList }) {
             <Form.Control
               type="email"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               isInvalid={!!errors.email}
               required
             />
@@ -89,13 +113,13 @@ function ClubForm({ show, onHide, club, refreshList }) {
 
           <Form.Group className="mb-3">
             <Form.Label>Telefone *</Form.Label>
-            <InputMask 
-              mask="+55 99 99999-9999" 
+            <InputMask
+              mask="+55 99 99999-9999"
               value={formData.telefone}
-              onChange={(e) => setFormData({...formData, telefone: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, telefone: e.target.value })}
             >
               {(inputProps) => (
-                <Form.Control 
+                <Form.Control
                   {...inputProps}
                   type="text"
                   placeholder="+55 71 98765-4321"
@@ -112,7 +136,7 @@ function ClubForm({ show, onHide, club, refreshList }) {
             <Form.Control
               type="text"
               value={formData.cidade_sede}
-              onChange={(e) => setFormData({...formData, cidade_sede: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, cidade_sede: e.target.value })}
               isInvalid={!!errors.cidade_sede}
               required
             />
