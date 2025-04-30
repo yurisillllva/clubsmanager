@@ -42,5 +42,12 @@ module.exports = {
 
   async deleteClub(id) {
     return ClubRepository.delete(id);
+  },
+
+  async checkEmailUnique(email) {
+    const existingClub = await ClubRepository.findByEmail(email);
+    if (existingClub) {
+      throw new Error('Email já está em uso');
+    }
   }
 };
