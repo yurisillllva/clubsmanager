@@ -93,7 +93,7 @@ function ClubList() {
                 <td>{formatDate(club.data_criacao)}</td>
                 <td>
                   {club.telefone 
-                    ? `+55 ${club.telefone.replace(/(\d{2})(\d{5})(\d{4})/, "$1 $2-$3")}`
+                    ? `${club.telefone.replace(/(\d{2})(\d{5})(\d{4})/, "$1 $2-$3")}`
                     : 'Não informado'}
                 </td>
                 <td>{club.cidade_sede}</td>
